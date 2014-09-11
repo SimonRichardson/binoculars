@@ -3,7 +3,13 @@ package main
 import (
 	"fmt"
 
-	"github.com/SimonRichardson/binoculars/binoculars"
+	bins "github.com/SimonRichardson/binoculars/binoculars"
+)
+
+var (
+	firstName bins.Lens = bins.ObjectLens("FirstName")
+	lastName  bins.Lens = bins.ObjectLens("LastName")
+	age       bins.Lens = bins.ObjectLens("Age")
 )
 
 type Person struct {
@@ -20,13 +26,21 @@ func NewPerson(firstName, lastName string, age uint) Person {
 	}
 }
 
-func PersonAge(p Person, age uint) Person {
-	return binoculars.ObjectLens("Age").Run(p).Set(age).(Person)
+func (p Person) SetFirstName(v string) Person {
+	return firstName.Run(p).Set(v).(Person)
+}
+
+func (p Person) SetLastName(v string) Person {
+	return lastName.Run(p).Set(v).(Person)
+}
+
+func (p Person) SetAge(v uint) Person {
+	return age.Run(p).Set(v).(Person)
 }
 
 func main() {
-	person0 := NewPerson("Timmy", "Rogers", 24)
-	person1 := PersonAge(person0, 22)
+	person0 := NewPerson("John", "Doe", 24)
+	person1 := person0.SetAge(22)
 
 	fmt.Println(person0, person1)
 }
