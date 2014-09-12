@@ -2,7 +2,7 @@ package binoculars
 
 import "reflect"
 
-func Id() Lens {
+func IdLens() Lens {
 	return NewLens(func(a Any) Store {
 		return NewStore(identity(), constant(a))
 	})
@@ -21,13 +21,13 @@ func AccessorLens(accessor Accessor) Lens {
 	})
 }
 
-func ObjectLens(property string) Lens {
+func SliceLens(index uint) Lens {
 	return NewLens(func(a Any) Store {
 		src := reflect.ValueOf(a)
 		dst := reflect.New(src.Type()).Elem()
 		dst.Set(src)
 
-		val := dst.FieldByName(property)
+		val := dst.Index(int(index))
 
 		return NewStore(
 			func(x Any) Any {
@@ -41,13 +41,13 @@ func ObjectLens(property string) Lens {
 	})
 }
 
-func SliceLens(index uint) Lens {
+func ObjectLens(property Property) Lens {
 	return NewLens(func(a Any) Store {
 		src := reflect.ValueOf(a)
 		dst := reflect.New(src.Type()).Elem()
 		dst.Set(src)
 
-		val := dst.Index(int(index))
+		val := dst.FieldByName(property.String())
 
 		return NewStore(
 			func(x Any) Any {
