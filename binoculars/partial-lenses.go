@@ -30,11 +30,10 @@ func ObjectPartialLens(property Property) PartialLens {
 	})
 }
 
-func ObjectPartialLenses(properties []Property) []PartialLens {
-	num := len(properties)
-	res := make([]PartialLens, num, num)
-	for k, v := range properties {
-		res[k] = ObjectPartialLens(v)
+func ObjectPartialLenses(properties []Property) map[Property]PartialLens {
+	res := make(map[Property]PartialLens, len(properties))
+	for _, v := range properties {
+		res[v] = ObjectPartialLens(v)
 	}
 	return res
 }
