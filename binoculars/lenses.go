@@ -60,3 +60,11 @@ func SliceLens(index uint) Lens {
 		)
 	})
 }
+
+func ObjectLenses(properties []Property) map[Property]Lens {
+	res := make(map[Property]Lens, len(properties))
+	for _, v := range properties {
+		res[v] = ObjectLens(v)
+	}
+	return res
+}
