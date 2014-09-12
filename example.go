@@ -65,6 +65,13 @@ func main() {
 
 	fmt.Println(person0, x.AndThen(y).Run(person0).Set("7987654321"))
 
-	// Multiple changes!
-	fmt.Println(person0, firstName.And(lastName).Run(person0).Set([]bins.Any{"A", "B"}))
+	// Partial changes!
+	a := bins.ObjectPartialLens("FirstName")
+	b := bins.ObjectPartialLens("X")
+
+	change := func(x bins.Any) bins.Any {
+		return x.(bins.Store).Set("xxxxx")
+	}
+
+	fmt.Println(person0, a.Run(person0).Map(change), b.Run(person0).Map(change))
 }
